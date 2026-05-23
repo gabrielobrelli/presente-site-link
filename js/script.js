@@ -722,6 +722,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   pageHistory = ['page1'];
 
   if(MODO_VISUALIZACAO) {
+    document.getElementById('fabAdmin').style.display = 'none';
     await carregarDoFirebase(SITE_ID);
   } else {
     try {
