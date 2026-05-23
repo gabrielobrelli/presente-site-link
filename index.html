@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Título da aba do navegador -->
+  <title>Site Presente</title>
+
+  <!-- Ícone da aba (favicon) — coloque o arquivo "iconcoracao.png" na pasta img/ -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/iconcoracao.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/iconcoracao.png">
+  <link rel="shortcut icon" href="img/iconcoracao.png">
+
+  <!-- Fontes do Google: Dancing Script (cursiva), Playfair Display (elegante), Nunito (corpo) -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@400;600;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Arquivo de estilos externo (css/style.css) -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==================== FUNDO DE ESTRELAS ==================== -->
+<!-- Stars geradas dinamicamente via JS (createStars()) -->
+<div class="stars-bg" id="starsBg"></div>
+
+<!-- ==================== TOAST DE NOTIFICAÇÃO ==================== -->
+<!-- Mensagem flutuante exibida por showToast() -->
+<div class="toast" id="toast"></div>
+
+<!-- ==================== BOTÃO FLUTUANTE DE EDIÇÃO (FAB) ==================== -->
+<!-- Aparece na página 1. Abre o painel de edição ao clicar -->
+<div class="floating-admin" id="fabAdmin">
+  <button class="fab" onclick="goPage('admin')" title="Editar Site">✏️</button>
+</div>
+
+<!-- ==================== BOTÃO VOLTAR (FLUTUANTE) ==================== -->
+<!-- Aparece em todas as páginas exceto a página 1 -->
+<div class="back-float" id="backFloat" style="display:none">
+  <button class="back-float-btn" onclick="goBack()">← Voltar</button>
+</div>
+
+<!-- ==================== PAGE 1 — INÍCIO ==================== -->
+<div class="page active" id="page1">
+
+  <!-- Foto de capa do casal -->
+  <div class="hero-cover">
+    <!-- Imagem padrão: pode ser substituída no painel de edição -->
+    <img id="p1-hero-img" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800&q=80" alt="Foto do casal">
+    <div class="hero-cover-overlay"></div>
+    <!-- Texto sobre a foto (editável no painel) -->
+    <div class="hero-cover-label" id="p1-cover-label">Sobre o casal</div>
+  </div>
+
+  <div class="page1-content">
+    <!-- Nome do casal (editável no painel) -->
+    <div class="couple-name" id="p1-couple-name">Nome 1 e Nome 2</div>
+    <!-- Subtítulo com o ano do início do relacionamento -->
+    <div class="together-since" id="p1-together-since">Juntos desde 2001</div>
+
+    <!-- ---- CONTADOR DE TEMPO ---- -->
+    <!-- Atualizado a cada segundo pelo JS (startCounter / updateCounter) -->
+    <div class="counter-grid">
+      <div class="counter-cell">
+        <div class="counter-num" id="cnt-years">0</div>
+        <div class="counter-label">Anos</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num" id="cnt-months">0</div>
+        <div class="counter-label">Meses</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num" id="cnt-days">0</div>
+        <div class="counter-label">Dias</div>
+      </div>
+    </div>
+    <div class="counter-grid">
+      <div class="counter-cell">
+        <div class="counter-num" id="cnt-hours">0</div>
+        <div class="counter-label">Horas</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num" id="cnt-minutes">0</div>
+        <div class="counter-label">Minutos</div>
+      </div>
+      <div class="counter-cell">
+        <div class="counter-num" id="cnt-seconds">0</div>
+        <div class="counter-label">Segundos</div>
+      </div>
+    </div>
+
+    <!-- ---- PLAYER DE MÚSICA ---- -->
+    <div class="music-player">
+      <div class="player-top">
+
+        <!-- Capa da música: clicável para o usuário enviar uma foto personalizada -->
+        <!-- O input de arquivo está oculto e é acionado pelo onclick do div -->
+        <div class="player-art" id="playerArt"
+             onclick="document.getElementById('player-art-upload').click()"
+             title="Clique para adicionar foto da música">
+          <!-- Input oculto de upload da capa da música -->
+          <input type="file" id="player-art-upload" accept="image/*" onchange="loadSongArt(this)">
+          <!-- Emoji padrão exibido quando não há imagem carregada -->
+          🎵
+          <!-- Overlay com ícone de câmera que aparece ao passar o mouse -->
+          <div class="player-art-overlay">📷</div>
+        </div>
+
+        <!-- Informações da música (editáveis no painel) -->
+        <div class="player-info">
+          <div class="player-title" id="playerTitle">Sua Música</div>
+          <div class="player-artist" id="playerArtist">Artista</div>
+        </div>
+        <!-- Ícone de confirmação/check -->
+        <div class="player-check">✓</div>
+      </div>
+
+      <!-- Barra de progresso da música (clicável para pular) -->
+      <div class="player-progress">
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-times">
+          <span id="timeNow">0:00</span>
+          <span id="timeDuration">0:00</span>
+        </div>
+      </div>
+
+      <!-- Controles do player -->
+      <div class="player-controls">
+        <button class="ctrl-btn" onclick="shuffleToggle()" id="btnShuffle" title="Aleatório">⇄</button>
+        <button class="ctrl-btn" onclick="audioSeek(-10)" title="Voltar 10s">⏮</button>
+        <button class="play-btn" onclick="togglePlay()" id="playBtn">▶</button>
+        <button class="ctrl-btn" onclick="audioSeek(10)" title="Avançar 10s">⏭</button>
+        <button class="ctrl-btn" onclick="repeatToggle()" id="btnRepeat" title="Repetir">↻</button>
+      </div>
+
+      <!-- Elemento de áudio oculto — controlado pelo JS -->
+      <audio id="audioPlayer" class="audio-elem"></audio>
+    </div>
+
+    <!-- ---- MENSAGEM ESPECIAL ---- -->
+    <!-- Clicável para expandir/recolher (toggleMensagem) -->
+    <div class="mensagem-card" id="mensagemCard" onclick="toggleMensagem()">
+      <div class="mensagem-label">💌 Mensagem especial</div>
+      <div class="mensagem-text">
+        <!-- Preview: primeiras linhas da mensagem -->
+        <span class="mensagem-preview" id="mensagemPreview">Prévia de sua mensagem especial...<br>Aqui sua mensagem especial.</span>
+        <!-- Texto completo: visível após expandir -->
+        <span class="mensagem-full" id="mensagemFull">Prévia de sua mensagem especial...<br>Aqui sua mensagem especial.<br>Digite aqui sua mensagem especial...<br>Esse é o lugar para expressar<br>O que você sente de verdade.<br>Te amo hoje e para sempre.</span>
+      </div>
+    </div>
+
+    <!-- Botão de navegação para a página de história -->
+    <button class="nav-btn nav-btn-primary" onclick="goPage('historia')">Ver Nossa História →</button>
+  </div>
+</div><!-- fim #page1 -->
+
+<!-- ==================== PAGE 2 — HISTÓRIA ==================== -->
+<div class="page" id="page2">
+  <div class="page2-header">
+    <div class="page-title">Nossa Jornada</div>
+    <div class="page-subtitle">Cada momento que nos trouxe até aqui.</div>
+  </div>
+  <!-- Timeline populada dinamicamente por renderTimeline() no JS -->
+  <div class="timeline" id="timelineContainer">
+    <!-- Os itens são inseridos via JS com base em siteData.moments -->
+  </div>
+  <div class="page-nav">
+    <button class="nav-btn nav-btn-primary" onclick="goPage('lugares')">Veja Nossos Lugares →</button>
+  </div>
+</div><!-- fim #page2 -->
+
+<!-- ==================== PAGE 3 — LUGARES / MAPA ==================== -->
+<div class="page" id="page3">
+  <div class="places-header">
+    <div class="page-title" style="font-size:clamp(1.8rem,6vw,2.8rem)">Nossa Jornada no Mapa</div>
+    <div class="page-subtitle">Lugares que marcaram nossa história</div>
+  </div>
+
+  <!-- Seção do mapa: o canvas fake é inserido aqui pelo JS (initFakeMap) -->
+  <div class="map-section">
+    <div id="map-container">
+      <!-- Placeholder inicial; substituído pelo canvas animado ao abrir a página -->
+      <!-- O botão "Abrir no Google Maps" também é inserido aqui pelo JS -->
+    </div>
+  </div>
+
+  <!-- Lista de cards de lugares (populada por renderPlaces() no JS) -->
+  <div class="places-list" id="placesList">
+    <!-- Os cards são inseridos via JS com base em siteData.places -->
+  </div>
+
+  <div class="page-nav">
+    <button class="nav-btn nav-btn-primary" onclick="goPage('ceu')">Nosso Céu →</button>
+  </div>
+</div><!-- fim #page3 -->
+
+<!-- ==================== PAGE 4 — CÉU ==================== -->
+<div class="page" id="page4">
+  <!-- Nome do casal (atualizado por renderSky() no JS) -->
+  <div class="sky-couple-name" id="skyCupleName">Nome 1 e Nome 2</div>
+
+  <!-- Canvas circular onde as estrelas são desenhadas (drawSkyCanvas) -->
+  <div class="sky-canvas-wrap">
+    <canvas id="skyCanvas" width="340" height="340"></canvas>
+    <div class="sky-circle-border"></div>
+    <div class="sky-circle-mid"></div>
+  </div>
+
+  <!-- Frase personalizada do céu -->
+  <div class="sky-quote" id="skyQuote">"O céu que estava com a gente"</div>
+
+  <!-- Metadados: cidade, data, coordenadas (atualizado por renderSky) -->
+  <div class="sky-meta" id="skyMeta">
+    Cidade Exemplo, Estado Exemplo, Brasil<br>
+    1 de Janeiro de 2001 - 00:00<br>
+    12.0000°S 49.0000°W
+  </div>
+
+  <!-- Botões de fim e volta ao início -->
+  <div class="sky-nav">
+    <button class="sky-btn sky-btn-outline" onclick="endExperience()">Fim</button>
+    <button class="sky-btn sky-btn-solid" onclick="goPage('p1')">Começo</button>
+  </div>
+</div><!-- fim #page4 -->
+
+<!-- ==================== PAINEL DE EDIÇÃO (ADMIN) ==================== -->
+<div class="page" id="pageAdmin">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <div class="admin-title">✏️ Painel de Edição</div>
+      <div class="admin-subtitle">Personalize todas as informações do seu site romântico</div>
+    </div>
+
+    <!-- ---- SEÇÃO: CORES DO TEMA ---- -->
+    <div class="admin-section">
+      <div class="admin-section-title">🎨 Cores do Tema</div>
+      <div class="form-group">
+        <div class="form-label">Cor Principal</div>
+        <div class="color-row">
+          <!-- Cores predefinidas (bolinhas clicáveis) -->
+          <div class="color-presets" id="colorPresets">
+            <div class="color-preset selected" style="background:#c2185b" data-color="#c2185b" onclick="selectColor(this)"></div>
+            <div class="color-preset" style="background:#e91e8c" data-color="#e91e8c" onclick="selectColor(this)"></div>
+            <div class="color-preset" style="background:#9c27b0" data-color="#9c27b0" onclick="selectColor(this)"></div>
+            <div class="color-preset" style="background:#3f51b5" data-color="#3f51b5" onclick="selectColor(this)"></div>
+            <div class="color-preset" style="background:#009688" data-color="#009688" onclick="selectColor(this)"></div>
+            <div class="color-preset" style="background:#ff5722" data-color="#ff5722" onclick="selectColor(this)"></div>
+          </div>
+          <!-- Campo de texto para digitar hex manualmente -->
+          <input class="color-input-hex" id="colorHex" type="text" value="#c2185b" placeholder="#hex" onchange="applyColorHex()">
+          <!-- Seletor de cor nativo do navegador -->
+          <input type="color" class="color-swatch" id="colorPicker" value="#c2185b" onchange="applyColorFromPicker()">
+        </div>
+      </div>
+    </div>
+
+    <!-- ---- SEÇÃO: PÁGINA 1 — INÍCIO ---- -->
+    <div class="admin-section">
+      <div class="admin-section-title">💑 Página 1 — Início</div>
+
+      <!-- Nomes do casal -->
+      <div class="form-grid2">
+        <div class="form-group">
+          <label class="form-label">Nome 1</label>
+          <input class="form-input" id="a-name1" type="text" value="Nome 1" placeholder="Seu nome">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nome 2</label>
+          <input class="form-input" id="a-name2" type="text" value="Nome 2" placeholder="Nome do amor">
+        </div>
+      </div>
+
+      <!-- Texto sobre a foto de capa -->
+      <div class="form-group">
+        <label class="form-label">Frase do topo da foto</label>
+        <input class="form-input" id="a-cover-label" type="text" value="Sobre o casal">
+      </div>
+
+      <!-- Data e hora de início do relacionamento -->
+      <div class="form-group">
+        <label class="form-label">Data de início do relacionamento</label>
+        <input class="form-input" id="a-start-date" type="datetime-local" value="2001-01-01T00:00">
+      </div>
+
+      <!-- Upload da foto de capa -->
+      <div class="form-group">
+        <label class="form-label">Foto do casal (capa)</label>
+        <div class="upload-area" onclick="document.getElementById('upload-hero').click()">
+          <input type="file" id="upload-hero" accept="image/*" onchange="previewImage(this,'preview-hero','p1-hero-img')">
+          <div class="upload-icon">📷</div>
+          <div class="upload-text">Clique para enviar foto de capa</div>
+          <img class="upload-preview" id="preview-hero">
+        </div>
+      </div>
+
+      <!-- Mensagem especial completa -->
+      <div class="form-group">
+        <label class="form-label">Mensagem especial (texto completo)</label>
+        <textarea class="form-textarea" id="a-mensagem" placeholder="Escreva sua mensagem aqui...">Prévia de sua mensagem especial...
+Aqui sua mensagem especial.
+Digite aqui sua mensagem especial...
+Esse é o lugar para expressar
+O que você sente de verdade.
+Te amo hoje e para sempre.</textarea>
+      </div>
+
+      <!-- Upload da música MP3 -->
+      <div class="form-group">
+        <label class="form-label">Música (upload MP3)</label>
+        <div class="upload-area" onclick="document.getElementById('upload-music').click()">
+          <input type="file" id="upload-music" accept="audio/*" onchange="loadMusic(this)">
+          <div class="upload-icon">🎵</div>
+          <div class="upload-text">Clique para enviar música MP3</div>
+        </div>
+      </div>
+
+      <!-- Nome da música e artista (exibidos no player) -->
+      <div class="form-grid2">
+        <div class="form-group">
+          <label class="form-label">Nome da música</label>
+          <input class="form-input" id="a-song-title" type="text" value="Sua Música">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Artista</label>
+          <input class="form-input" id="a-song-artist" type="text" value="Artista">
+        </div>
+      </div>
+    </div><!-- fim seção Página 1 -->
+
+    <!-- ---- SEÇÃO: PÁGINA 2 — MOMENTOS (NOSSA JORNADA) ---- -->
+    <div class="admin-section">
+      <div class="admin-section-title">📸 Página 2 — Nossa Jornada</div>
+      <!-- Cards de momentos populados por renderMomentsAdmin() -->
+      <div id="momentsAdmin">
+        <!-- populado por JS -->
+      </div>
+      <button class="add-btn" onclick="addMomentAdmin()">+ Adicionar Momento</button>
+    </div>
+
+    <!-- ---- SEÇÃO: PÁGINA 3 — LUGARES ---- -->
+    <div class="admin-section">
+      <div class="admin-section-title">📍 Página 3 — Nossos Lugares</div>
+      <!-- Cards de lugares populados por renderPlacesAdmin() -->
+      <div id="placesAdmin">
+        <!-- populado por JS -->
+      </div>
+      <button class="add-btn" onclick="addPlaceAdmin()">+ Adicionar Local</button>
+    </div>
+
+    <!-- ---- SEÇÃO: PÁGINA 4 — CÉU ---- -->
+    <div class="admin-section">
+      <div class="admin-section-title">🌌 Página 4 — Nosso Céu</div>
+
+      <!-- Frase personalizada exibida abaixo do canvas de estrelas -->
+      <div class="form-group">
+        <label class="form-label">Frase personalizada</label>
+        <input class="form-input" id="a-sky-quote" type="text" value='"O céu que estava com a gente"'>
+      </div>
+
+      <!-- Data e hora do momento especial -->
+      <div class="form-grid2">
+        <div class="form-group">
+          <label class="form-label">Data</label>
+          <input class="form-input" id="a-sky-date" type="date" value="2001-01-01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Hora</label>
+          <input class="form-input" id="a-sky-time" type="time" value="00:00">
+        </div>
+      </div>
+
+      <!-- Localização exibida abaixo do céu -->
+      <div class="form-grid3">
+        <div class="form-group">
+          <label class="form-label">Cidade</label>
+          <input class="form-input" id="a-sky-city" type="text" value="Cidade Exemplo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estado</label>
+          <input class="form-input" id="a-sky-state" type="text" value="Estado Exemplo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">País</label>
+          <input class="form-input" id="a-sky-country" type="text" value="Brasil">
+        </div>
+      </div>
+
+      <!-- Coordenadas geográficas (também usadas no mapa da página 3) -->
+      <div class="form-grid2">
+        <div class="form-group">
+          <label class="form-label">Latitude</label>
+          <input class="form-input" id="a-sky-lat" type="text" value="-12.0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Longitude</label>
+          <input class="form-input" id="a-sky-lng" type="text" value="-49.0000">
+        </div>
+      </div>
+    </div><!-- fim seção Céu -->
+
+    <!-- Botões de ação principais do admin -->
+    <button class="save-btn" onclick="saveAll()">💾 Salvar Tudo</button>
+    <button class="preview-btn" onclick="goPage('p1')">👁 Visualizar Site</button>
+
+    <!-- Botão de gerar link e caixa do link gerado -->
+    <button class="save-btn" onclick="gerarLink()" style="background:linear-gradient(135deg,#1976d2,#0d47a1);margin-top:0.5rem;">
+      🔗 Gerar Link para Destinatário
+    </button>
+
+    <div id="linkGerado" style="display:none;margin-top:1.2rem;background:#1a1a2e;border:1px solid #1976d2;border-radius:1rem;padding:1.2rem;">
+      <div style="font-size:0.85rem;color:#90caf9;margin-bottom:0.6rem;">✅ Link gerado! Copie e envie para o destinatário:</div>
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <input id="linkUrl" type="text" readonly
+          style="flex:1;background:#0d0d0d;border:1px solid #333;border-radius:0.5rem;padding:0.6rem 0.8rem;color:#fff;font-size:0.8rem;outline:none;">
+        <button onclick="copiarLink()"
+          style="background:#1976d2;color:#fff;border:none;border-radius:0.5rem;padding:0.6rem 1rem;cursor:pointer;font-size:0.85rem;white-space:nowrap;">
+          📋 Copiar
+        </button>
+      </div>
+      <div style="font-size:0.75rem;color:#666;margin-top:0.6rem;">O destinatário verá o site sem botão de edição.</div>
+    </div>
+
+  </div>
+</div><!-- fim #pageAdmin -->
+
+<!-- Arquivo de scripts externo (js/script.js) — carregado ao final para garantir que o DOM está pronto -->
+<script type="module" src="js/script.js"></script>
+</body>
+</html>
