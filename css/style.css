@@ -1,0 +1,1000 @@
+/* ============================================================
+   style.css — Site Romântico
+   Todos os estilos visuais do site.
+   Para editar cores, fontes e layout: altere as variáveis em :root
+   ============================================================ */
+
+/* ========== VARIÁVEIS GLOBAIS DE TEMA ========== */
+/* Altere aqui para mudar as cores do site inteiro */
+:root {
+  --color-primary: #c2185b;       /* Cor principal (botões, destaques) */
+  --color-secondary: #880e4f;     /* Cor secundária (hover, sombras) */
+  --color-accent: #f48fb1;        /* Cor de acento (títulos admin) */
+  --color-bg-dark: #0d0d0d;       /* Fundo principal escuro */
+  --color-bg-card: #1a1a1a;       /* Fundo dos cards */
+  --color-text: #ffffff;          /* Cor do texto principal */
+  --color-text-muted: #b0b0b0;    /* Cor do texto secundário */
+  --color-pink: #e91e8c;          /* Rosa vibrante (player, timeline) */
+  --font-display: 'Dancing Script', cursive;  /* Fonte cursiva decorativa */
+  --font-heading: 'Playfair Display', serif;  /* Fonte de títulos elegante */
+  --font-body: 'Nunito', sans-serif;          /* Fonte do corpo do texto */
+}
+
+/* ========== RESET BÁSICO ========== */
+/* Remove margens/padding padrão do navegador */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Scroll suave entre seções */
+html { scroll-behavior: smooth; font-size: 16px; }
+
+/* Estilo base do body */
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg-dark);
+  color: var(--color-text);
+  overflow-x: hidden;    /* Evita scroll horizontal indesejado */
+  min-height: 100vh;
+}
+
+/* ========== SISTEMA DE PÁGINAS ========== */
+/* Cada "página" do site é um div que aparece/some via JS */
+.page {
+  display: none;
+  min-height: 100vh;
+  animation: fadeIn 0.6s ease; /* Animação de entrada ao trocar de página */
+}
+/* Classe adicionada via JS para mostrar a página ativa */
+.page.active { display: block; }
+
+/* Animação de fade + subida ao entrar em uma página */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== PAGE 1 — INÍCIO ========== */
+#page1 { background: var(--color-bg-dark); }
+
+/* Imagem de capa do casal no topo */
+.hero-cover {
+  position: relative;
+  width: 100%;
+  height: 55vw;
+  max-height: 420px;
+  min-height: 240px;
+  overflow: hidden;
+  border-radius: 0 0 2rem 2rem; /* Bordas arredondadas embaixo */
+}
+.hero-cover img {
+  width: 100%; height: 100%;
+  object-fit: cover;  /* A imagem cobre todo o espaço sem distorcer */
+  display: block;
+}
+/* Texto sobre a foto de capa (ex: "Sobre o casal") */
+.hero-cover-label {
+  position: absolute;
+  top: 1.2rem; left: 1.2rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+/* Gradiente escuro sobre a foto para melhorar leitura do texto */
+.hero-cover-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(13,13,13,0.7));
+}
+
+/* Área de conteúdo abaixo da foto de capa */
+.page1-content {
+  padding: 1.5rem 1.2rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Nome do casal em destaque */
+.couple-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 6vw, 2.4rem); /* Tamanho responsivo */
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.2rem;
+}
+/* Subtítulo "Juntos desde..." */
+.together-since {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.4rem;
+}
+
+/* ========== CONTADOR DE TEMPO ========== */
+/* Grade de 3 colunas para Anos/Meses/Dias e Horas/Min/Seg */
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+.counter-cell {
+  background: #222;
+  border-radius: 1rem;
+  padding: 1rem 0.5rem;
+  text-align: center;
+}
+.counter-num {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+.counter-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-top: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========== PLAYER DE MÚSICA ========== */
+.music-player {
+  background: #1e1e2e;
+  border-radius: 1.2rem;
+  padding: 1.2rem;
+  margin: 1.4rem 0;
+  border: 1px solid #333;
+}
+/* Linha do topo: arte/foto + info da música */
+.player-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+/* Capa da música (emoji padrão ou imagem enviada) */
+.player-art {
+  width: 56px; height: 56px;
+  border-radius: 0.6rem;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  cursor: pointer; /* Indica que é clicável para trocar a imagem */
+  position: relative;
+  transition: filter 0.2s;
+}
+/* Escurece a capa ao hover para indicar que é clicável */
+.player-art:hover { filter: brightness(0.7); }
+/* Ícone de câmera que aparece no hover da capa */
+.player-art-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.45);
+  border-radius: 0.6rem;
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.player-art:hover .player-art-overlay { opacity: 1; }
+/* Input de arquivo escondido para upload da capa da música */
+.player-art input[type="file"] { display: none; }
+.player-art img { width: 100%; height: 100%; object-fit: cover; border-radius: 0.6rem; }
+
+.player-info { flex: 1; min-width: 0; }
+/* Título da música com truncamento se for muito longo */
+.player-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Nome do artista */
+.player-artist {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+/* Ícone de check ao lado direito */
+.player-check {
+  color: var(--color-primary);
+  font-size: 1.3rem;
+}
+
+/* Área da barra de progresso */
+.player-progress {
+  margin-bottom: 0.8rem;
+}
+/* Barra de progresso clicável */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 0.4rem;
+}
+/* Preenchimento da barra de progresso (largura atualizada por JS) */
+.progress-fill {
+  height: 100%;
+  background: var(--color-pink);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s;
+  position: relative;
+}
+/* Bolinha branca no final do progresso */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -5px; top: -4px;
+  width: 12px; height: 12px;
+  background: #fff;
+  border-radius: 50%;
+}
+/* Tempo atual e tempo restante */
+.progress-times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+/* Controles do player: shuffle, voltar, play/pause, avançar, repeat */
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+}
+/* Botões pequenos (shuffle, seek, repeat) */
+.ctrl-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.3rem;
+  transition: color 0.2s;
+}
+.ctrl-btn:hover { color: #fff; }
+/* Botão play/pause circular branco */
+.play-btn {
+  width: 52px; height: 52px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #000;
+  transition: transform 0.2s;
+}
+.play-btn:hover { transform: scale(1.08); }
+.play-btn:active { transform: scale(0.96); }
+
+/* Elemento de áudio real — escondido visualmente */
+.audio-elem { display: none; }
+
+/* ========== CARD DE MENSAGEM ESPECIAL ========== */
+.mensagem-card {
+  background: var(--color-primary);
+  border-radius: 1.2rem;
+  padding: 1.4rem;
+  margin: 1.2rem 0;
+  cursor: pointer; /* Clicável para expandir/recolher */
+  transition: transform 0.2s;
+}
+.mensagem-card:hover { transform: scale(1.01); }
+.mensagem-label {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+}
+.mensagem-text {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.4;
+  color: rgba(255,255,255,0.9);
+}
+/* Controle de visibilidade do preview vs texto completo */
+.mensagem-preview { display: block; }
+.mensagem-full { display: none; }
+/* Quando o card tem classe "expanded" (adicionada por JS), inverte */
+.mensagem-card.expanded .mensagem-preview { display: none; }
+.mensagem-card.expanded .mensagem-full { display: block; }
+
+/* ========== BOTÕES DE NAVEGAÇÃO ENTRE PÁGINAS ========== */
+.nav-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  margin-top: 1rem;
+}
+/* Botão preenchido com cor principal */
+.nav-btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.nav-btn-primary:hover { background: var(--color-secondary); transform: translateY(-2px); }
+/* Botão com borda apenas */
+.nav-btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #444;
+}
+.nav-btn-outline:hover { border-color: var(--color-primary); }
+
+/* ========== PAGE 2 — HISTÓRIA (TIMELINE) ========== */
+#page2 {
+  background: radial-gradient(ellipse at top, #1a0a1e 0%, #0d0d0d 60%);
+  padding: 2rem 0 3rem;
+}
+.page2-header {
+  text-align: center;
+  padding: 1rem 1.5rem 0;
+  margin-bottom: 3rem;
+}
+/* Título principal das páginas internas */
+.page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.page-subtitle {
+  color: var(--color-text-muted);
+  font-size: clamp(0.85rem, 3vw, 1rem);
+}
+
+/* ========== LINHA DO TEMPO (TIMELINE) ========== */
+.timeline {
+  position: relative;
+  padding: 0 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+/* Linha vertical central da timeline */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #444, #444, transparent);
+  transform: translateX(-50%);
+}
+/* Em telas pequenas, linha fica à esquerda */
+@media (max-width: 500px) {
+  .timeline::before { left: 2.5rem; }
+}
+
+/* Cada item da timeline começa invisível e desce (animado por JS + IntersectionObserver) */
+.timeline-item {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+/* Classe adicionada por JS quando o item entra na tela */
+.timeline-item.visible { opacity: 1; transform: translateY(0); }
+
+/* Alterna esquerda/direita para itens pares e ímpares */
+.timeline-item:nth-child(odd) { flex-direction: row; }
+.timeline-item:nth-child(even) { flex-direction: row-reverse; }
+
+/* Em mobile, todos ficam à esquerda */
+@media (max-width: 500px) {
+  .timeline-item:nth-child(even) { flex-direction: row; }
+  .timeline-item { padding-left: 1.5rem; }
+}
+
+/* Área da foto polaroid */
+.timeline-photo {
+  flex: 1;
+  max-width: 180px;
+}
+/* Efeito polaroid: fundo branco, padding, rotação leve */
+.polaroid {
+  background: #fff;
+  padding: 0.6rem 0.6rem 1.8rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transform: rotate(-2deg);
+  transition: transform 0.3s;
+}
+.timeline-item:nth-child(even) .polaroid { transform: rotate(2deg); }
+.polaroid:hover { transform: rotate(0) scale(1.04) !important; }
+.polaroid img {
+  width: 100%; aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+/* Texto abaixo da foto polaroid */
+.polaroid-caption {
+  text-align: center;
+  margin-top: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: #555;
+}
+
+/* Informações textuais ao lado da foto */
+.timeline-info {
+  flex: 1;
+  padding-top: 1rem;
+}
+.timeline-date {
+  font-weight: 700;
+  color: var(--color-pink);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.timeline-heart {
+  display: inline-block;
+  margin: 0 0.3rem;
+  color: var(--color-pink);
+}
+.timeline-desc {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+/* Ponto na linha central */
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px; height: 12px;
+  background: var(--color-pink);
+  border-radius: 50%;
+  margin-top: 1rem;
+  box-shadow: 0 0 0 4px rgba(233,30,140,0.2);
+}
+@media (max-width: 500px) {
+  .timeline-dot { left: 2.5rem; }
+}
+
+/* Área do botão de navegação nas páginas internas */
+.page-nav { padding: 1rem 1.5rem 0; max-width: 600px; margin: 0 auto; }
+
+/* ========== PAGE 3 — LUGARES / MAPA ========== */
+#page3 { background: var(--color-bg-dark); }
+
+/* Seção do mapa (fake/animado) */
+.map-section {
+  position: relative;
+  width: 100%;
+  height: 55vh;
+  min-height: 300px;
+  background: #1a2a1a;
+  overflow: hidden;
+}
+#map-container {
+  width: 100%; height: 100%;
+}
+
+/* ---- MAPA FAKE ANIMADO ---- */
+/* Canvas onde a animação do mapa é desenhada por JS */
+#fakeMapCanvas {
+  width: 100%; height: 100%;
+  display: block;
+}
+/* Overlay de gradiente sobre o mapa fake para dar profundidade */
+.map-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+}
+/* Badge de coordenadas exibido no canto do mapa */
+.map-coords-badge {
+  position: absolute;
+  bottom: 1rem; left: 1rem;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 0.6rem;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.72rem;
+  color: #ccc;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+}
+/* Botão "Abrir no Google Maps" sobre o mapa */
+.map-open-btn {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: #fff;
+  color: #1a1a2e;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.55rem 1.1rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.4rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 10;
+  text-decoration: none;
+}
+.map-open-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 18px rgba(0,0,0,0.5); }
+
+/* Cabeçalho da lista de lugares */
+.places-header {
+  padding: 1.5rem 1.2rem 0.5rem;
+  text-align: center;
+}
+/* Lista de cards de lugares */
+.places-list {
+  padding: 0.5rem 1.2rem 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+/* Card individual de cada lugar */
+.place-card {
+  background: #1a1a1a;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  border: 1px solid #2a2a2a;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+/* Destaca o card ao hover ou quando está ativo */
+.place-card:hover, .place-card.active {
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+/* Foto do lugar */
+.place-photo {
+  width: 70px; height: 70px;
+  border-radius: 0.7rem;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #333;
+}
+.place-info { flex: 1; }
+.place-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
+.place-date { font-size: 0.78rem; color: var(--color-text-muted); margin-bottom: 0.4rem; }
+.place-quote { font-size: 0.85rem; color: var(--color-text-muted); font-style: italic; }
+/* Ícone de localização verde à direita do card */
+.place-loc-icon {
+  width: 32px; height: 32px;
+  background: rgba(76,175,80,0.15);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #4caf50;
+  flex-shrink: 0;
+}
+
+/* ========== PAGE 4 — CÉU ========== */
+/* Página de céu estrelado — exibida como flex centralizado */
+#page4 {
+  background: #000;
+  min-height: 100vh;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.2rem;
+  text-align: center;
+}
+#page4.active { display: flex; }
+
+/* Nome do casal em fonte cursiva */
+.sky-couple-name {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  color: #fff;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 30px rgba(255,255,255,0.3);
+}
+
+/* Wrapper do canvas do céu (circular) */
+.sky-canvas-wrap {
+  position: relative;
+  width: min(340px, 90vw);
+  height: min(340px, 90vw);
+  margin: 0 auto 2rem;
+}
+/* O canvas onde as estrelas são desenhadas */
+#skyCanvas {
+  width: 100%; height: 100%;
+  border-radius: 50%; /* Aparece como círculo */
+}
+/* Bordas decorativas sobre o canvas */
+.sky-circle-border {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  pointer-events: none;
+}
+.sky-circle-mid {
+  position: absolute;
+  inset: 20%; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  pointer-events: none;
+}
+
+/* Frase personalizada do céu */
+.sky-quote {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 4vw, 1.4rem);
+  font-style: italic;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  max-width: 500px;
+}
+/* Metadados: cidade, data, coordenadas */
+.sky-meta {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+/* Botões de navegação da página do céu */
+.sky-nav {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.sky-btn {
+  padding: 0.9rem 2rem;
+  border-radius: 2rem;
+  border: none;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sky-btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.4);
+}
+.sky-btn-outline:hover { border-color: #fff; }
+.sky-btn-solid {
+  background: #fff;
+  color: #000;
+}
+.sky-btn-solid:hover { transform: scale(1.04); }
+
+/* ========== PAINEL DE EDIÇÃO (ADMIN) ========== */
+#pageAdmin {
+  background: #0a0a0a;
+  padding: 1.5rem 1rem 3rem;
+}
+.admin-header {
+  text-align: center;
+  padding: 1rem 0 2rem;
+  border-bottom: 1px solid #222;
+  margin-bottom: 2rem;
+}
+.admin-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--color-primary);
+  margin-bottom: 0.3rem;
+}
+.admin-subtitle { color: var(--color-text-muted); font-size: 0.9rem; }
+
+/* Container central do admin */
+.admin-wrap { max-width: 700px; margin: 0 auto; }
+
+/* Card de seção do admin (ex: "Cores", "Página 1", "Momentos"...) */
+.admin-section {
+  background: #111;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #222;
+}
+/* Título de cada seção do admin */
+.admin-section-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-accent);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ========== FORMULÁRIOS DO ADMIN ========== */
+.form-group { margin-bottom: 1rem; }
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+/* Inputs, textareas e selects do admin */
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 0.7rem;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--color-primary); }
+.form-textarea { min-height: 80px; resize: vertical; }
+
+/* Grades de 2 e 3 colunas para os campos de formulário */
+.form-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.form-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+@media (max-width: 480px) {
+  .form-grid2 { grid-template-columns: 1fr; }
+  .form-grid3 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ========== SELETOR DE CORES ========== */
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.color-presets { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+/* Bolinhas de cores predefinidas */
+.color-preset {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.color-preset:hover, .color-preset.selected { border-color: #fff; transform: scale(1.15); }
+/* Campo de texto hex (#c2185b) */
+.color-input-hex {
+  width: 110px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 0.5rem 0.7rem;
+  outline: none;
+}
+/* Input nativo de cor do navegador */
+.color-swatch {
+  width: 34px; height: 34px;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: none;
+  flex-shrink: 0;
+}
+
+/* ========== CARDS DE MOMENTO / LUGAR NO ADMIN ========== */
+.moment-card, .place-admin-card {
+  background: #1a1a1a;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid #2a2a2a;
+  position: relative;
+}
+/* Botão X para remover um momento ou lugar */
+.moment-remove {
+  position: absolute;
+  top: 0.7rem; right: 0.7rem;
+  background: #333;
+  border: none;
+  color: #999;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+.moment-remove:hover { background: #c62828; color: #fff; }
+
+/* Botão tracejado para adicionar novo momento/lugar */
+.add-btn {
+  background: transparent;
+  border: 2px dashed #444;
+  border-radius: 0.8rem;
+  color: var(--color-text-muted);
+  width: 100%;
+  padding: 0.8rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.add-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+/* Área de upload de arquivos (foto, música) */
+.upload-area {
+  background: #1a1a1a;
+  border: 2px dashed #333;
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.upload-area:hover { border-color: var(--color-primary); }
+.upload-area input { display: none; } /* Input de arquivo sempre oculto */
+.upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.upload-text { font-size: 0.85rem; color: var(--color-text-muted); }
+/* Preview da imagem carregada */
+.upload-preview {
+  max-width: 100%; max-height: 120px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  margin-top: 0.5rem;
+  display: none;
+}
+
+/* Botão principal de salvar */
+.save-btn {
+  width: 100%;
+  padding: 1.1rem;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 1rem;
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s, transform 0.2s;
+}
+.save-btn:hover { background: var(--color-secondary); transform: translateY(-2px); }
+.save-btn:active { transform: translateY(0); }
+
+/* Botão de preview do site */
+.preview-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  border-radius: 1rem;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.8rem;
+  transition: all 0.2s;
+}
+.preview-btn:hover { background: var(--color-primary); color: #fff; }
+
+/* ========== BOTÃO FLUTUANTE DE EDIÇÃO (FAB) ========== */
+/* Fica fixo no canto inferior direito em todas as páginas */
+.floating-admin {
+  position: fixed;
+  bottom: 1.5rem; right: 1.5rem;
+  z-index: 1000;
+}
+.fab {
+  width: 52px; height: 52px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(194,24,91,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.fab:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(194,24,91,0.5); }
+
+/* ========== BOTÃO DE VOLTAR (FLUTUANTE) ========== */
+/* Aparece em todas as páginas exceto a página 1 */
+.back-float {
+  position: fixed;
+  bottom: 1.5rem; left: 1.5rem;
+  z-index: 999;
+}
+.back-float-btn {
+  background: rgba(100,80,200,0.85);
+  backdrop-filter: blur(8px);
+  border: none;
+  border-radius: 2rem;
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.4rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: background 0.2s, transform 0.2s;
+}
+.back-float-btn:hover { background: rgba(100,80,200,1); transform: translateY(-2px); }
+
+/* ========== TOAST DE NOTIFICAÇÃO ========== */
+/* Mensagem que aparece no topo por alguns segundos */
+.toast {
+  position: fixed;
+  top: 1.5rem; left: 50%;
+  transform: translateX(-50%) translateY(-80px); /* Começa fora da tela */
+  background: #222;
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 9999;
+  transition: transform 0.4s ease;
+  border: 1px solid #333;
+  white-space: nowrap;
+}
+/* Classe adicionada por JS para mostrar o toast */
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ========== FUNDO DE ESTRELAS ========== */
+/* Fixo em toda a tela, atrás de tudo */
+.stars-bg {
+  position: fixed; inset: 0;
+  pointer-events: none; /* Não bloqueia cliques */
+  z-index: 0;
+  overflow: hidden;
+}
+/* Cada estrela individual */
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  animation: twinkle var(--dur, 3s) infinite alternate;
+}
+/* Animação de piscar suave */
+@keyframes twinkle {
+  from { opacity: 0.1; }
+  to { opacity: 0.7; }
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (min-width: 768px) {
+  .page1-content, .page-nav { max-width: 700px; }
+  .hero-cover { max-height: 520px; }
+  .timeline { padding: 0 2rem; }
+}
+@media (min-width: 1024px) {
+  .page1-content { padding: 2rem 2rem 3rem; }
+}
